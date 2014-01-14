@@ -1,3 +1,0 @@
-define([
-    'directives/localeBundle'
-], function () {});

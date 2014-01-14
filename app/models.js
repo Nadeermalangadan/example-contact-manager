@@ -1,3 +1,0 @@
-define([
-    'models/ContactModel'
-], function () {});
