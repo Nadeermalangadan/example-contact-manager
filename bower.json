@@ -1,0 +1,14 @@
+{
+  "name": "contact-manager",
+  "version": "0.0.0",
+  "devDependencies": {
+    "bazalt": "*",
+    "bootstrap": "~3.0.0",
+    "requirejs": "*"
+  },
+  "dependencies": {
+    "bz-model": "*",
+    "angular-scenario": "~1.2.8",
+    "ng-table": "~0.3.1"
+  }
+}
