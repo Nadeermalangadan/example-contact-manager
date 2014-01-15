@@ -1,45 +1,84 @@
 'use strict';
 
-/* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
-
-describe('my app', function() {
+describe('app', function() {
 
     beforeEach(function() {
-        browser().navigateTo('app/index.html');
+        browser().navigateTo('/');
     });
 
-
-    it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-        expect(browser().location().url()).toBe("/view1");
-    });
-
-
-    describe('view1', function() {
-
+    describe('add', function() {
         beforeEach(function() {
-            browser().navigateTo('#/view1');
+            browser().navigateTo('/#!/add');
+            localStorage.clear();
         });
 
-
-        it('should render view1 when user navigates to /view1', function() {
-            expect(element('[ng-view] p:first').text()).
-                toMatch(/partial for view 1/);
+        it('should render new contact page', function() {
+            expect(element('h1').text()).toMatch(/New contact/);
         });
-
+        it('should render save contact and render in the table', function() {
+            input('contact.name').enter('New');
+            input('contact.surname').enter('Surname');
+            input('contact.phone').enter('000');
+            input('contact.group').enter('Group 1');
+            element(':button').click();
+            expect(element('tbody:first tr:first td').text()).toMatch(/Group 1/);
+            expect(element('tbody:first tr:nth(1) td:first').text()).toMatch(/New/);
+            expect(element('tbody:first tr:nth(1) td:nth(1)').text()).toMatch(/Surname/);
+            expect(element('tbody:first tr:nth(1) td:nth(2)').text()).toMatch(/000/);
+        });
     });
 
-
-    describe('view2', function() {
-
+    describe('edit', function() {
         beforeEach(function() {
-            browser().navigateTo('#/view2');
+            browser().navigateTo('/#!/contact/1');
         });
 
-
-        it('should render view2 when user navigates to /view2', function() {
-            expect(element('[ng-view] p:first').text()).
-                toMatch(/partial for view 2/);
+        it('should render edit contact page', function() {
+            expect(element('h1').text()).toMatch(/Edit contact/);
         });
+        it('should render save contact and render in the table', function() {
+            expect(input('contact.name').val()).toEqual('New');
+            expect(input('contact.surname').val()).toEqual('Surname');
+            expect(input('contact.phone').val()).toEqual('000');
+            expect(input('contact.group').val()).toEqual('Group 1');
 
+            input('contact.name').enter('New 2');
+            input('contact.surname').enter('Surname 2');
+            input('contact.phone').enter('111');
+            input('contact.group').enter('Group 2');
+            element(':button').click(); //save
+            expect(element('tbody:first tr:first td').text()).toMatch(/Group 2/);
+            expect(element('tbody:first tr:nth(1) td:first').text()).toMatch(/New 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(1)').text()).toMatch(/Surname 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(2)').text()).toMatch(/111/);
+        });
     });
+
+    describe('list', function() {
+        beforeEach(function() {
+            browser().navigateTo('/');
+        });
+
+        it('should render edit contact page', function() {
+            expect(element('h1').text()).toMatch(/List of contacts/);
+        });
+        it('should render save contact and render in the table', function() {
+            expect(element('tbody:first tr:first td').text()).toMatch(/Group 2/);
+            expect(element('tbody:first tr:nth(1) td:first').text()).toMatch(/New 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(1)').text()).toMatch(/Surname 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(2)').text()).toMatch(/111/);
+
+            // founded
+            input('filter').enter('N');
+            expect(element('tbody:first tr:first td').text()).toMatch(/Group 2/);
+            expect(element('tbody:first tr:nth(1) td:first').text()).toMatch(/New 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(1)').text()).toMatch(/Surname 2/);
+            expect(element('tbody:first tr:nth(1) td:nth(2)').text()).toMatch(/111/);
+
+            // not found
+            input('filter').enter('F');
+            expect(element('tbody:first tr:first td').text()).toMatch(/No group/);
+        });
+    });
+
 });

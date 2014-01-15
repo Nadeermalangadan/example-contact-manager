@@ -110,12 +110,8 @@ module.exports = function (grunt) {
                 overwrite: true,
                 replacements: [
                     {
-                        from: /<script src="(.*)\/require.js"><\/script>/gm,
-                        to: ''
-                    },
-                    {
-                        from: '<script src="/main.js"></script>',
-                        to: '<script src="/js/main.min.js"></script>'
+                        from: /<script src="(.*)\/require.js"(.*)><\/script>/gm,
+                        to: '<script src="js/main.min.js"></script>'
                     },
                     {
                         from: '<script src="/bazalt.js"></script>',
@@ -126,7 +122,7 @@ module.exports = function (grunt) {
         },
         i18nextract: {
             extract: {
-                lang: ['en_GB', 'ru_RU'],
+                lang: ['en', 'ru'],
                 src: ['views/**.html', 'index.html'],
                 dest: './locale',
                 extraSrc: [],
@@ -137,7 +133,7 @@ module.exports = function (grunt) {
         ngTemplateCache: {
             views: {
                 files: {
-                    'build/views.js': 'views/**.html'
+                    'build/views.js': './views/**.html'
                 },
                 options: {
                     trim: '.',
