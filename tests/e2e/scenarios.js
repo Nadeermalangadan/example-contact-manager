@@ -1,14 +1,15 @@
 'use strict';
 
 describe('app', function() {
+    var baseUrl = 'http://esvit.github.io/example-contact-manager/';
 
     beforeEach(function() {
-        browser().navigateTo('/');
+        browser().navigateTo(baseUrl);
     });
 
     describe('add', function() {
         beforeEach(function() {
-            browser().navigateTo('/#!/add');
+            browser().navigateTo(baseUrl + '#!/add');
             localStorage.clear();
         });
 
@@ -30,7 +31,7 @@ describe('app', function() {
 
     describe('edit', function() {
         beforeEach(function() {
-            browser().navigateTo('/#!/contact/1');
+            browser().navigateTo(baseUrl + '#!/contact/1');
         });
 
         it('should render edit contact page', function() {
@@ -56,7 +57,7 @@ describe('app', function() {
 
     describe('list', function() {
         beforeEach(function() {
-            browser().navigateTo('/');
+            browser().navigateTo(baseUrl);
         });
 
         it('should render edit contact page', function() {
